@@ -426,15 +426,20 @@ class DB {
         if(!isset($dbConf['DB_CHARSET'])){
             $dbConf['DB_CHARSET'] = 'utf8';
         }
-        $this->_db = mysql_connect($dbConf['DB_HOST'].':'.$dbConf['DB_PORT'],$dbConf['DB_USER'],$dbConf['DB_PWD']);
+        // modify by jack : 649781645@qq.com
+        // $this->_db = mysql_connect($dbConf['DB_HOST'].':'.$dbConf['DB_PORT'],$dbConf['DB_USER'],$dbConf['DB_PWD']);
+        // if($this->_db === false){
+        //     halt(mysql_error());
+        // }
+        // $selectDb = mysql_select_db($dbConf['DB_NAME'],$this->_db);
+        // if($selectDb === false){
+        //     halt(mysql_error());
+        // }
+        $this->_db = mysqli_connect($dbConf['DB_HOST'].':'.$dbConf['DB_PORT'],$dbConf['DB_USER'],$dbConf['DB_PWD'],$dbConf['DB_NAME']);
         if($this->_db === false){
             halt(mysql_error());
         }
-        $selectDb = mysql_select_db($dbConf['DB_NAME'],$this->_db);
-        if($selectDb === false){
-            halt(mysql_error());
-        }
-        mysql_set_charset($dbConf['DB_CHARSET']);
+        mysqli_set_charset($this->_db,$dbConf['DB_CHARSET']);
     }
     private function __clone(){}
 
